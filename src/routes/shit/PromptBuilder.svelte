@@ -1,30 +1,15 @@
 <script lang="ts">
+    import RichTextEditor from "../../components/RichTextEditor.svelte";
+    import { writable } from "svelte/store";
+
     let prompt = "How many test items did I send?";
-    $: instructions = ["initial"] as string[];
-
-    function addInstruction() {
-        instructions = [...instructions, "test"];
-    }
-    function removeInstruction(index: number) {
-        instructions = instructions.toSpliced(index, 1);
-    }
-
-    export let sendPropmt: (prompt: string, instructions: string[]) => void;
+    let context = writable("");
+    export let sendPropmt: (prompt: string, context: string) => void;
 </script>
 
 <div class="builder">
     <div class="flex-1 instructionList">
-        <button on:click={addInstruction}> Add instruction </button>
-        {#each instructions as instruction, index}
-            <div class="instruction">
-                <textarea
-                    class="instructionInput"
-                    placeholder="Enter instruction"
-                    bind:value={instruction}
-                />
-                <button on:click={() => removeInstruction(index)}> x </button>
-            </div>
-        {/each}
+        <RichTextEditor bind:content={context} />
     </div>
     <div class="flex-1 inputPanel">
         <textarea
@@ -33,9 +18,7 @@
             placeholder="Enter content"
         />
 
-        <button on:click={() => sendPropmt(prompt, instructions)}>
-            Send
-        </button>
+        <button on:click={() => sendPropmt(prompt, $context)}> Send </button>
     </div>
 </div>
 

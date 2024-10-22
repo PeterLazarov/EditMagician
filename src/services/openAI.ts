@@ -13,7 +13,7 @@ export async function callOpenAI(prompt: string): Promise<string | undefined> {
     const response = await axios.post(
       OPENAI_API_URL,
       {
-        model: "gpt-3.5-turbo",
+        model: "gpt-4o",
         messages: [{ role: "user", content: prompt }],
       },
       {
@@ -32,10 +32,6 @@ export async function callOpenAI(prompt: string): Promise<string | undefined> {
   }
 }
 
-export async function sendContextPrompt(
-  instructions: string[],
-  prompt: string,
-) {
-  const context = instructions.join(".\n");
+export async function sendContextPrompt(context: string, prompt: string) {
   return callOpenAI(context + "\n\n" + prompt);
 }

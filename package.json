@@ -28,7 +28,11 @@
 	"type": "module",
 	"packageManager": "pnpm@9.12.2+sha256.2ef6e547b0b07d841d605240dce4d635677831148cd30f6d564b8f4f928f73d2",
 	"dependencies": {
+		"@bytemd/plugin-gfm": "^1.21.0",
+		"@tiptap/core": "^2.8.0",
+		"@tiptap/starter-kit": "^2.8.0",
 		"axios": "^1.7.7",
+		"bytemd": "^1.21.0",
 		"dotenv": "^16.4.5"
 	}
 }

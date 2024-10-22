@@ -5,12 +5,11 @@
     let builderVisible = true;
     $: output = "";
 
-    function sendPropmt(prompt: string, instructions: string[]) {
-        sendContextPrompt(instructions, prompt).then(
-            (val) => (output = val || ""),
-        );
+    function sendPropmt(prompt: string, context: string) {
+        sendContextPrompt(context, prompt).then((val) => (output = val || ""));
     }
 
+    $: console.log({ output });
     function togglePromptBuilder() {
         builderVisible = !builderVisible;
     }
@@ -30,9 +29,9 @@
         <PromptBuilder {sendPropmt} />
     {/if}
 
-    <div>
-        {output}
-    </div>
+    <pre class="outputPanel">
+        {@html output}
+    </pre>
 </div>
 
 <style>
@@ -44,5 +43,14 @@
     }
     .toggleBuilderButton {
         padding: 0 50px;
+    }
+    .outputPanel {
+        border: 1px solid black;
+        border-radius: 8px;
+        padding: 20px;
+        max-width: 1024px;
+        width: 100%;
+        margin: 20px 100px;
+        box-sizing: border-box;
     }
 </style>
