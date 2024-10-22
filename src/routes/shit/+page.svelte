@@ -1,8 +1,10 @@
 <script lang="ts">
     import { sendContextPrompt } from "../../services/openAI";
     import PromptBuilder from "./PromptBuilder.svelte";
+    import SettingsModal from "./SettingsModal.svelte";
 
     let builderVisible = true;
+    let settingsVisible = false;
     let loading = false;
     $: output = "";
 
@@ -26,11 +28,19 @@
 </svelte:head>
 
 <div class="container">
-    <button class="toggleBuilderButton" on:click={togglePromptBuilder}>
-        Toggle prompt builder
-    </button>
+    <div class="buttonsPanel">
+        <button class="toggleBuilderButton" on:click={togglePromptBuilder}>
+            Toggle prompt builder
+        </button>
+        <button
+            class="toggleBuilderButton"
+            on:click={() => (settingsVisible = true)}
+        >
+            Settings
+        </button>
+    </div>
     {#if builderVisible}
-        <h1>Build Prompt</h1>
+        <h1>Busild Prompt</h1>
         <PromptBuilder {sendPropmt} {loading} />
     {/if}
 
@@ -39,12 +49,19 @@
     </div>
 </div>
 
+<SettingsModal bind:showModal={settingsVisible} />
+
 <style>
     .container {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+    .buttonsPanel {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
     }
     .toggleBuilderButton {
         padding: 0 50px;
