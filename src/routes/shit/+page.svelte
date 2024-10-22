@@ -3,10 +3,15 @@
     import PromptBuilder from "./PromptBuilder.svelte";
 
     let builderVisible = true;
+    let loading = false;
     $: output = "";
 
     function sendPropmt(prompt: string, context: string) {
-        sendContextPrompt(context, prompt).then((val) => (output = val || ""));
+        loading = true;
+        sendContextPrompt(context, prompt).then((val) => {
+            loading = false;
+            output = val || "";
+        });
     }
 
     $: console.log({ output });
@@ -26,12 +31,12 @@
     </button>
     {#if builderVisible}
         <h1>Build Prompt</h1>
-        <PromptBuilder {sendPropmt} />
+        <PromptBuilder {sendPropmt} {loading} />
     {/if}
 
-    <pre class="outputPanel">
+    <div class="outputPanel">
         {@html output}
-    </pre>
+    </div>
 </div>
 
 <style>
