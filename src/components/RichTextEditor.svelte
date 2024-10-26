@@ -42,35 +42,34 @@
 </script>
 
 {#if editor}
-    <button
-        on:click={() =>
-            editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        class:active={editor.isActive("heading", { level: 1 })}
-    >
-        H1
-    </button>
-    <button
-        on:click={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        class:active={editor.isActive("heading", { level: 2 })}
-    >
-        H2
-    </button>
-    <button
-        on:click={() => editor.chain().focus().setParagraph().run()}
-        class:active={editor.isActive("paragraph")}
-    >
-        P
-    </button>
+    <div class="buttonsPanel">
+        <button
+            on:click={() => editor.chain().focus().toggleBulletList().run()}
+            class:active={editor.isActive("bulletList")}
+        >
+            Bullet list
+        </button>
+    </div>
 {/if}
 
 <div class="editor" bind:this={element} />
 
 <style>
+    .buttonsPanel {
+        display: flex;
+        gap: 4px;
+    }
     .editor {
-        background-color: white;
-        padding: 0px 10px;
-        border: 1px solid black;
+        & .tiptap {
+            background-color: white;
+            padding: 0px 10px;
+            border: 1px solid black;
+
+            /* & .tiptap > p {
+            margin: 0;
+            padding: 5px 10px;
+        } */
+        }
     }
 
     button.active {

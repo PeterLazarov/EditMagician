@@ -16,7 +16,9 @@
         });
     }
 
-    $: console.log({ output });
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
     function togglePromptBuilder() {
         builderVisible = !builderVisible;
     }
@@ -40,13 +42,18 @@
         </button>
     </div>
     {#if builderVisible}
-        <h1>Busild Prompt</h1>
+        <h1>Build Prompt</h1>
         <PromptBuilder {sendPropmt} {loading} />
     {/if}
 
-    <div class="outputPanel">
+    <div class="outputPanel" style="font-size: 22px;">
         {@html output}
     </div>
+    {#if output}
+        <button class="scrollToTopButton" on:click={scrollToTop}
+            >Scroll to Top</button
+        >
+    {/if}
 </div>
 
 <SettingsModal bind:showModal={settingsVisible} />
@@ -74,5 +81,19 @@
         width: 100%;
         margin: 20px 100px;
         box-sizing: border-box;
+    }
+    .scrollToTopButton {
+        position: sticky;
+        bottom: 10px;
+        right: 10px;
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .scrollToTopButton:hover {
+        background-color: #0056b3;
     }
 </style>

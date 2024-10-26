@@ -41,7 +41,7 @@
             on:click={() => sendPropmt(prompt, $context)}
         >
             {#if loading}
-                Waiting response ...
+                Waiting for response ...
             {:else}Send
             {/if}
         </button>
@@ -75,5 +75,6 @@
 
     .promptInput {
         height: 100%;
+        padding: 10px;
     }
 </style>
