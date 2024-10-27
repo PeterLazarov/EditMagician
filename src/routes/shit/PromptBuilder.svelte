@@ -5,7 +5,7 @@
     import { writable } from "svelte/store";
     import { onMount } from "svelte";
 
-    let prompt = "How many test items did I send?";
+    let prompt = "";
     let context = writable("");
 
     export let sendPropmt: (prompt: string, context: string) => void;
@@ -16,16 +16,26 @@
         setCookie("context", value, 7); // storing for 7 days
     });
 
-    // Initialize context from the cookie when the component mounts
     onMount(() => {
         const savedContext = getCookie("context");
         if (savedContext) {
             context.set(savedContext);
         }
     });
+
+    function handleSubmit(event: Event) {
+        event.preventDefault();
+        sendPropmt(prompt, $context);
+    }
+
+    function handleKeydown(event: KeyboardEvent) {
+        if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+            handleSubmit(event);
+        }
+    }
 </script>
 
-<div class="builder">
+<form on:submit={handleSubmit} class="builder">
     <div class="flex-1 instructionList">
         <RichTextEditor bind:content={context} />
     </div>
@@ -33,20 +43,19 @@
         <textarea
             class="promptInput"
             bind:value={prompt}
-            placeholder="Enter content"
+            on:keydown={handleKeydown}
+            placeholder="Enter text"
         />
 
-        <button
-            disabled={loading}
-            on:click={() => sendPropmt(prompt, $context)}
-        >
+        <button type="submit" disabled={loading}>
             {#if loading}
                 Waiting for response ...
-            {:else}Send
+            {:else}
+                Send
             {/if}
         </button>
     </div>
-</div>
+</form>
 
 <style>
     .builder {

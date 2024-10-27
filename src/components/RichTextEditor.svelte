@@ -63,24 +63,27 @@
 </div>
 
 <style>
-    .buttonsPanel {
-        position: absolute;
-        left: 4px;
-        top: 4px;
-        display: flex;
-        gap: 4px;
-    }
     .editor {
         position: relative;
+
+        & .buttonsPanel {
+            position: absolute;
+            left: 1px;
+            right: 1px;
+            top: 1px;
+            padding: 4px;
+            background-color: lightgray;
+            display: flex;
+            gap: 4px;
+        }
         & .tiptap {
             background-color: white;
             padding: 0px 10px;
             border: 1px solid black;
             padding-top: 25px;
-            /* & .tiptap > p {
-            margin: 0;
-            padding: 5px 10px;
-        } */
+        }
+        & .tiptap.ProseMirror-focused {
+            outline: none;
         }
     }
 
