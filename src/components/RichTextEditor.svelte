@@ -41,30 +41,42 @@
     });
 </script>
 
-{#if editor}
-    <div class="buttonsPanel">
-        <button
-            on:click={() => editor.chain().focus().toggleBulletList().run()}
-            class:active={editor.isActive("bulletList")}
-        >
-            Bullet list
-        </button>
-    </div>
-{/if}
+<div class="editor" bind:this={element}>
+    {#if editor}
+        <div class="buttonsPanel">
+            <button
+                on:click={() => editor.chain().focus().toggleBulletList().run()}
+                class:active={editor.isActive("bulletList")}
+            >
+                Bullet list
+            </button>
 
-<div class="editor" bind:this={element} />
+            <button
+                on:click={() =>
+                    editor.chain().focus().toggleOrderedList().run()}
+                class:active={editor.isActive("orderedList")}
+            >
+                Ordered list
+            </button>
+        </div>
+    {/if}
+</div>
 
 <style>
     .buttonsPanel {
+        position: absolute;
+        left: 4px;
+        top: 4px;
         display: flex;
         gap: 4px;
     }
     .editor {
+        position: relative;
         & .tiptap {
             background-color: white;
             padding: 0px 10px;
             border: 1px solid black;
-
+            padding-top: 25px;
             /* & .tiptap > p {
             margin: 0;
             padding: 5px 10px;
