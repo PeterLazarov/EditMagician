@@ -4,7 +4,10 @@
     import StarterKit from "@tiptap/starter-kit";
     import { writable } from "svelte/store";
 
-    export let content = writable("<p>Hello World! 🌍️ </p>"); // Exported writable store for content
+    import Button from "./Button.svelte";
+
+    export let content = writable("");
+    export let className = "";
 
     let element: HTMLElement;
     let editor: Editor;
@@ -41,20 +44,24 @@
     });
 </script>
 
-<div class="editor" bind:this={element}>
+<div class={`editor ${className}`} bind:this={element} {...$$restProps}>
     {#if editor}
         <div class="buttonsPanel">
-            <button
-                on:click={() => editor.chain().focus().toggleBulletList().run()}
-                class:active={editor.isActive("bulletList")}
+            <Button
+                on:click={() => {
+                    console.log("bullet");
+                    editor.chain().focus().toggleBulletList().run();
+                }}
             >
                 Bullet list
-            </button>
+            </Button>
 
             <button
-                on:click={() =>
-                    editor.chain().focus().toggleOrderedList().run()}
-                class:active={editor.isActive("orderedList")}
+                on:click={() => {
+                    console.log("order");
+
+                    editor.chain().focus().toggleOrderedList().run();
+                }}
             >
                 Ordered list
             </button>
@@ -77,18 +84,14 @@
             gap: 4px;
         }
         & .tiptap {
+            height: 100%;
             background-color: white;
             padding: 0px 10px;
             border: 1px solid black;
-            padding-top: 25px;
+            padding-top: 50px;
         }
         & .tiptap.ProseMirror-focused {
             outline: none;
         }
-    }
-
-    button.active {
-        background: black;
-        color: white;
     }
 </style>

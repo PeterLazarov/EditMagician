@@ -25,8 +25,9 @@
         }
     });
 
-    function handleSubmit(event: Event) {
+    function handleSend(event: Event) {
         event.preventDefault();
+        console.log("submit");
         sendPropmt(prompt, $context);
 
         if (submitButton) {
@@ -36,14 +37,14 @@
 
     function handleKeydown(event: KeyboardEvent) {
         if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
-            handleSubmit(event);
+            handleSend(event);
         }
     }
 </script>
 
-<form on:submit={handleSubmit} class="builder">
+<div class="builder">
     <div class="flex-1 instructionList">
-        <RichTextEditor bind:content={context} />
+        <RichTextEditor bind:content={context} className="h-full" />
     </div>
     <div class="flex-1 inputPanel">
         <textarea
@@ -53,7 +54,7 @@
             placeholder="Enter text"
         />
 
-        <Button type="submit" disabled={loading} bind:this={submitButton}>
+        <Button on:click={handleSend} disabled={loading}>
             {#if loading}
                 Waiting for response ...
             {:else}
@@ -61,7 +62,7 @@
             {/if}
         </Button>
     </div>
-</form>
+</div>
 
 <style>
     .builder {

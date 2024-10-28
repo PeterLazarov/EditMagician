@@ -22,6 +22,7 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
     function togglePromptBuilder() {
+        console.log("togglePromptBuilder");
         builderVisible = !builderVisible;
     }
 </script>
