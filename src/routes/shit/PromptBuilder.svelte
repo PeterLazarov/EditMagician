@@ -1,5 +1,6 @@
 <script lang="ts">
     import RichTextEditor from "../../components/RichTextEditor.svelte";
+    import Button from "../../components/Button.svelte";
     import { setCookie, getCookie } from "../../services/cookies";
 
     import { writable } from "svelte/store";
@@ -7,6 +8,7 @@
 
     let prompt = "";
     let context = writable("");
+    let submitButton: Button; // Reference to the submit button
 
     export let sendPropmt: (prompt: string, context: string) => void;
     export let loading = false;
@@ -26,6 +28,10 @@
     function handleSubmit(event: Event) {
         event.preventDefault();
         sendPropmt(prompt, $context);
+
+        if (submitButton) {
+            submitButton.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
     }
 
     function handleKeydown(event: KeyboardEvent) {
@@ -47,13 +53,13 @@
             placeholder="Enter text"
         />
 
-        <button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading} bind:this={submitButton}>
             {#if loading}
                 Waiting for response ...
             {:else}
                 Send
             {/if}
-        </button>
+        </Button>
     </div>
 </form>
 
@@ -85,5 +91,6 @@
     .promptInput {
         height: 100%;
         padding: 10px;
+        outline: none;
     }
 </style>

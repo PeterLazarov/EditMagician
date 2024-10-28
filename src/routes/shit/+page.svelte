@@ -1,11 +1,13 @@
 <script lang="ts">
     import { sendContextPrompt } from "../../services/openAI";
+    import Button from "../../components/Button.svelte";
     import PromptBuilder from "./PromptBuilder.svelte";
     import SettingsModal from "./SettingsModal.svelte";
 
     let builderVisible = true;
     let settingsVisible = false;
     let loading = false;
+    let fontSize = 22;
     $: output = "";
 
     function sendPropmt(prompt: string, context: string) {
@@ -31,32 +33,33 @@
 
 <div class="container">
     <div class="buttonsPanel">
-        <button class="toggleBuilderButton" on:click={togglePromptBuilder}>
+        <Button class="toggleBuilderButton" on:click={togglePromptBuilder}>
             Toggle prompt builder
-        </button>
-        <button
+        </Button>
+        <Button
             class="toggleBuilderButton"
             on:click={() => (settingsVisible = true)}
         >
             Settings
-        </button>
+        </Button>
     </div>
     {#if builderVisible}
         <h1>Build Prompt</h1>
         <PromptBuilder {sendPropmt} {loading} />
     {/if}
 
-    <div class="outputPanel" style="font-size: 22px;">
+    <div class="outputPanel" style={`font-size: ${fontSize}px;`}>
         {@html output}
     </div>
-    {#if output}
-        <button class="scrollToTopButton" on:click={scrollToTop}
-            >Scroll to Top</button
-        >
-    {/if}
 </div>
 
-<SettingsModal bind:showModal={settingsVisible} />
+{#if output}
+    <button class="scrollToTopButton" on:click={scrollToTop}
+        >Scroll to Top</button
+    >
+{/if}
+
+<SettingsModal bind:showModal={settingsVisible} bind:fontSize />
 
 <style>
     .container {
@@ -83,6 +86,7 @@
         box-sizing: border-box;
     }
     .scrollToTopButton {
+        align-self: flex-end;
         position: sticky;
         bottom: 10px;
         right: 10px;
