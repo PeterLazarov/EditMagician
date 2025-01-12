@@ -1,9 +1,12 @@
 <script lang="ts">
     import Modal from "../../components/Modal.svelte";
-    import { Select } from "flowbite-svelte";
+    import { Select, Range, Label } from "flowbite-svelte";
 
     export let showModal = false;
-    export let fontSize = 22;
+    export let settings = {
+        fontSize: 22,
+        paragraphSpacing: 0
+    }
 
     let fontSizes = [
         { value: 10, name: "10" },
@@ -26,7 +29,11 @@
 <div>
     <Modal bind:showModal>
         <span slot="header"> Settings </span>
-        <Select items={fontSizes} bind:value={fontSize} />
+        <Label>Font Size</Label>
+        <Select items={fontSizes} bind:value={settings.fontSize} />
+
+        <Label>Paragraph Spacing {settings.paragraphSpacing}</Label>
+        <Range min="0" max="20" bind:value={settings.paragraphSpacing} step="1" />
     </Modal>
 </div>
 

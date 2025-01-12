@@ -7,7 +7,10 @@
     let builderVisible = true;
     let settingsVisible = false;
     let loading = false;
-    let fontSize = 22;
+    let settings = {
+        fontSize: 22,
+        paragraphSpacing: 0
+    };
     $: output = "";
 
     function sendPropmt(prompt: string, context: string) {
@@ -49,7 +52,10 @@
         <PromptBuilder {sendPropmt} {loading} />
     {/if}
 
-    <div class="outputPanel" style={`font-size: ${fontSize}px;`}>
+    <div class="outputPanel" style="
+        font-size: {settings.fontSize}px;
+        --paragraph-spacing: {settings.paragraphSpacing}px;
+    ">
         {@html output}
     </div>
 </div>
@@ -60,7 +66,7 @@
     >
 {/if}
 
-<SettingsModal bind:showModal={settingsVisible} bind:fontSize />
+<SettingsModal bind:showModal={settingsVisible} bind:settings />
 
 <style>
     .container {
@@ -85,6 +91,12 @@
         width: 100%;
         margin: 20px 100px;
         box-sizing: border-box;
+
+        
+        & > p {
+            margin-top: var(--paragraph-spacing);
+            margin-bottom: var(--paragraph-spacing);
+        }
     }
     .scrollToTopButton {
         align-self: flex-end;

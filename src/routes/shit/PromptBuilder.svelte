@@ -1,34 +1,30 @@
 <script lang="ts">
-    import RichTextEditor from "../../components/RichTextEditor.svelte";
+    import { onMount } from "svelte";
+    import { Textarea } from 'flowbite-svelte';
+
     import Button from "../../components/Button.svelte";
     import { setCookie, getCookie } from "../../services/cookies";
 
-    import { writable } from "svelte/store";
-    import { onMount } from "svelte";
-
     let prompt = "";
-    let context = writable("");
+    let context = "";
     let submitButton: Button; // Reference to the submit button
 
     export let sendPropmt: (prompt: string, context: string) => void;
     export let loading = false;
 
-    // Subscribe to changes in context and store them in a cookie
-    context.subscribe((value) => {
-        setCookie("context", value, 7); // storing for 7 days
-    });
+    $: setCookie("context", context, 7); // storing for 7 days
 
     onMount(() => {
         const savedContext = getCookie("context");
         if (savedContext) {
-            context.set(savedContext);
+            context = savedContext;
         }
     });
 
     function handleSend(event: Event) {
         event.preventDefault();
         console.log("submit");
-        sendPropmt(prompt, $context);
+        sendPropmt(prompt, context);
 
         if (submitButton) {
             submitButton.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -44,10 +40,14 @@
 
 <div class="builder">
     <div class="flex-1 instructionList">
-        <RichTextEditor bind:content={context} className="h-full" />
+        <Textarea 
+            bind:value={context} 
+            placeholder="Enter instructions"
+            class='h-full' 
+        />
     </div>
     <div class="flex-1 inputPanel">
-        <textarea
+        <Textarea
             class="promptInput"
             bind:value={prompt}
             on:keydown={handleKeydown}
