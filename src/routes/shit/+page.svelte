@@ -1,24 +1,18 @@
 <script lang="ts">
-    import { sendContextPrompt } from "../../services/openAI";
     import Button from "../../components/Button.svelte";
-    import PromptBuilder from "./PromptBuilder.svelte";
+    import PromptForm from "./PromptForm.svelte";
     import SettingsModal from "./SettingsModal.svelte";
 
     let builderVisible = true;
     let settingsVisible = false;
-    let loading = false;
     let settings = {
         fontSize: 22,
         paragraphSpacing: 0
     };
     $: output = "";
 
-    function sendPropmt(prompt: string, context: string) {
-        loading = true;
-        sendContextPrompt(context, prompt).then((val) => {
-            loading = false;
-            output = val || "";
-        });
+    function onOutputShow(val: string) {
+        output = val
     }
 
     function scrollToTop() {
@@ -49,7 +43,7 @@
     </div>
     {#if builderVisible}
         <h1>Build Prompt</h1>
-        <PromptBuilder {sendPropmt} {loading} />
+        <PromptForm {onOutputShow} />
     {/if}
 
     <div class="outputPanel" style="
