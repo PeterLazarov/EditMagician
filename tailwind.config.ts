@@ -26,6 +26,7 @@ export default {
         },
         text: '#F7F7FF',
         border: '#4B5563',
+        contrast: '#fff',
         primary: {
           50:  '#FFFBE6',
           100: '#FFF4BF',

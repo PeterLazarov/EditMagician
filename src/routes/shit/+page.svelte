@@ -33,13 +33,10 @@
 
 <div class="container flex-1">
     <div class="buttonsPanel">
-        <Button class="toggleBuilderButton" on:click={togglePromptBuilder}>
+        <Button on:click={togglePromptBuilder}>
             Toggle prompt builder
         </Button>
-        <Button
-            class="toggleBuilderButton"
-            on:click={() => (settingsVisible = true)}
-        >
+        <Button on:click={() => (settingsVisible = true)}>
             Settings
         </Button>
     </div>
@@ -48,7 +45,7 @@
         <PromptForm {onOutputShow} />
     {/if}
 
-    <div class="outputPanel text-text border-border border bg-background-500 flex-1" style="
+    <div class="outputPanel text-text border-border border bg-white bg-opacity-10 flex-1" style="
         font-size: {settings.fontSize}px;
         --paragraph-spacing: {settings.paragraphSpacing}px;
     ">
@@ -57,9 +54,9 @@
 </div>
 
 {#if output}
-    <button class="scrollToTopButton" on:click={scrollToTop}
-        >Scroll to Top</button
-    >
+    <Button class="sticky bottom-2.5 right-2.5 self-end" on:click={scrollToTop}>
+        Scroll to Top
+    </Button>
 {/if}
 
 <SettingsModal bind:showModal={settingsVisible} bind:settings />
@@ -76,9 +73,6 @@
         flex-direction: row;
         gap: 8px;
     }
-    .toggleBuilderButton {
-        padding: 0 50px;
-    }
     .outputPanel {
         border-radius: 8px;
         padding: 20px;
@@ -92,20 +86,5 @@
             margin-top: var(--paragraph-spacing);
             margin-bottom: var(--paragraph-spacing);
         }
-    }
-    .scrollToTopButton {
-        align-self: flex-end;
-        position: sticky;
-        bottom: 10px;
-        right: 10px;
-        padding: 5px 10px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    .scrollToTopButton:hover {
-        background-color: #0056b3;
     }
 </style>
