@@ -1,10 +1,9 @@
 <script>
     import Header from "./Header.svelte";
-    import { colors } from "../tokens/colors";
     import "../app.css";
 </script>
 
-<div class="app bg-background">
+<div class="app bg-background-600">
     <Header></Header>
 
     <main>

@@ -28,7 +28,7 @@
 </script>
 
 <div>
-  <Modal class='bg-background' classHeader='bg-background text-text' classFooter='bg-background justify-end' title="Settings" bind:open={showModal} autoclose outsideclose>
+  <Modal class='bg-background-500' classHeader='bg-background-500 text-text' classFooter='bg-background-500 justify-end' title="Settings" bind:open={showModal} autoclose outsideclose>
     <Label>Font Size</Label>
     <Select items={fontSizes} bind:value={settings.fontSize} />
 

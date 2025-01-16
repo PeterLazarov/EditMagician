@@ -1,7 +1,7 @@
 <script lang="ts">
     import Button from "../../components/Button.svelte";
     import { sanitiseOutput } from "../../services/outputSanitiser";
-    
+
     import PromptForm from "./PromptForm.svelte";
     import SettingsModal from "./SettingsModal.svelte";
 
@@ -31,7 +31,7 @@
     <meta name="description" content="About this app" />
 </svelte:head>
 
-<div class="container">
+<div class="container flex-1">
     <div class="buttonsPanel">
         <Button class="toggleBuilderButton" on:click={togglePromptBuilder}>
             Toggle prompt builder
@@ -48,7 +48,7 @@
         <PromptForm {onOutputShow} />
     {/if}
 
-    <div class="outputPanel text-text border-text" style="
+    <div class="outputPanel text-text border-border border bg-background-500 flex-1" style="
         font-size: {settings.fontSize}px;
         --paragraph-spacing: {settings.paragraphSpacing}px;
     ">
@@ -80,7 +80,6 @@
         padding: 0 50px;
     }
     .outputPanel {
-        border: 1px solid;
         border-radius: 8px;
         padding: 20px;
         max-width: 1024px;
