@@ -34,7 +34,7 @@
     console.log("submit");
 
     loading = true;
-    console.log({returnType,fullContext})
+    queue = ''
     sendContextPrompt(fullContext, prompt).then((val) => {
       loading = false;
       onOutputShow(val || '')
@@ -50,7 +50,6 @@
     console.log("queue");
 
     loading = true;
-    console.log({returnType, fullContext})
     sendContextPrompt(fullContext, prompt).then((val) => {
       loading = false;
       queue = val || ''
@@ -66,7 +65,7 @@
 
   function handleKeydown(event: KeyboardEvent) {
     console.log(event)
-    if ((event.ctrlKey || event.metaKey || event.altKey) && event.key === "Enter") {
+    if ((event.ctrlKey || event.metaKey || event.altKey) && event.key === "s") {
       handleSend(event);
     }
     else if ((event.ctrlKey || event.metaKey || event.altKey) && event.key === "q") {
@@ -79,6 +78,7 @@
   <div class="column">
     <Textarea 
       bind:value={context} 
+      on:keydown={handleKeydown}
       placeholder="Enter instructions"
       class='flex-1' 
     />
@@ -100,7 +100,7 @@
       {#if loading}
         Waiting for response ...
       {:else}
-        Send
+        <u>S</u>end
       {/if}
     </Button>
 
@@ -113,7 +113,7 @@
         {#if loading}
           Waiting for response ...
         {:else}
-          Queue
+          <u>Q</u>ueue
         {/if}
       </Button>
     {/if}
@@ -132,9 +132,6 @@
   .return-type-group{
     display: flex;
     gap: 10px
-  }
-  .flex-1 {
-    flex: 1
   }
 
   .column {
