@@ -1,11 +1,12 @@
 <script lang="ts">
-    import Modal from "../../components/Modal.svelte";
-    import { Select, Range, Label } from "flowbite-svelte";
+    import { Select, Range, Modal } from "flowbite-svelte";
+    import Button from "../../components/Button.svelte";
+    import Label from "../../components/Label.svelte";
 
     export let showModal = false;
     export let settings = {
         fontSize: 22,
-        paragraphSpacing: 0
+        paragraphSpacing: 10
     }
 
     let fontSizes = [
@@ -27,14 +28,17 @@
 </script>
 
 <div>
-    <Modal bind:showModal>
-        <span slot="header"> Settings </span>
-        <Label>Font Size</Label>
-        <Select items={fontSizes} bind:value={settings.fontSize} />
+  <Modal class='bg-background' classHeader='bg-background text-text' classFooter='bg-background justify-end' title="Settings" bind:open={showModal} autoclose outsideclose>
+    <Label>Font Size</Label>
+    <Select items={fontSizes} bind:value={settings.fontSize} />
 
-        <Label>Paragraph Spacing {settings.paragraphSpacing}</Label>
-        <Range min="0" max="20" bind:value={settings.paragraphSpacing} step="1" />
-    </Modal>
+    <Label>Paragraph Spacing {settings.paragraphSpacing}</Label>
+    <Range min="0" max="20" bind:value={settings.paragraphSpacing} step="1" />
+
+    <svelte:fragment slot="footer">
+      <Button on:click={() => showModal = false}>Close</Button>
+    </svelte:fragment>
+  </Modal>
 </div>
 
 <style>

@@ -1,9 +1,10 @@
 <script>
     import Header from "./Header.svelte";
+    import { colors } from "../tokens/colors";
     import "../app.css";
 </script>
 
-<div class="app">
+<div class="app bg-background">
     <Header></Header>
 
     <main>
@@ -11,8 +12,8 @@
     </main>
 
     <footer>
-        <p>
-            visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit
+        <p class="text-text">
+            Transform any text you want!
         </p>
     </footer>
 </div>
@@ -22,6 +23,7 @@
         display: flex;
         flex-direction: column;
         min-height: 100vh;
+
     }
 
     main {

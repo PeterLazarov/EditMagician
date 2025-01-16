@@ -3,7 +3,7 @@
     import type { ButtonColorType } from "flowbite-svelte";
     import { createEventDispatcher } from "svelte";
 
-    export let color: ButtonColorType = "blue";
+    export let color: ButtonColorType = "primary";
     export let className: string = "";
 
     const dispatch = createEventDispatcher();
@@ -15,7 +15,7 @@
 
 <Button
     {color}
-    class={`focus-within:ring-0 focus-within:bg-transparent ${className}`}
+    class={`focus-within:ring-0 focus-within:bg-transparent text-text ${className}`}
     on:click={handleClick}
     {...$$restProps}
 >

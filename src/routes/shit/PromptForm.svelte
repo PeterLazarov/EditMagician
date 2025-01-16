@@ -1,21 +1,27 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { Textarea } from 'flowbite-svelte';
+  import { Textarea, Radio } from 'flowbite-svelte';
 
   import { sendContextPrompt } from "../../services/openAI";
   import Button from "../../components/Button.svelte";
+  import Label from "../../components/Label.svelte";
   import { setCookie, getCookie } from "../../services/cookies";
 
   let prompt = "";
   let context = "";
   let queue = "";
-  let submitButton: Button; // Reference to the submit button
-
+  let returnType: 'raw' | 'html' = "html";
+  let submitButton: Button; 
+  const returnTypeInstructions = {
+    raw: '',
+    html: 'Return the result as an html with a paragraph formatting'
+  } as const
   export let onOutputShow: (value: string) => void;
   export let loading = false;
 
   $: setCookie("context", context, 7); // storing for 7 days
-
+  $: fullContext = `${context} ${returnTypeInstructions[returnType]}`
+  
   onMount(() => {
     const savedContext = getCookie("context");
     if (savedContext) {
@@ -28,7 +34,8 @@
     console.log("submit");
 
     loading = true;
-    sendContextPrompt(context, prompt).then((val) => {
+    console.log({returnType,fullContext})
+    sendContextPrompt(fullContext, prompt).then((val) => {
       loading = false;
       onOutputShow(val || '')
     });
@@ -43,7 +50,8 @@
     console.log("queue");
 
     loading = true;
-    sendContextPrompt(context, prompt).then((val) => {
+    console.log({returnType, fullContext})
+    sendContextPrompt(fullContext, prompt).then((val) => {
       loading = false;
       queue = val || ''
     });
@@ -57,21 +65,30 @@
   }
 
   function handleKeydown(event: KeyboardEvent) {
-    if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+    console.log(event)
+    if ((event.ctrlKey || event.metaKey || event.altKey) && event.key === "Enter") {
       handleSend(event);
+    }
+    else if ((event.ctrlKey || event.metaKey || event.altKey) && event.key === "q") {
+      handleQueue(event);
     }
   }
 </script>
 
 <div class="builder">
-  <div class="flex-1 instructionList">
+  <div class="column">
     <Textarea 
       bind:value={context} 
       placeholder="Enter instructions"
-      class='h-full' 
+      class='flex-1' 
     />
+    <div class="return-type-group"> 
+      <Label>Return Format</Label>
+      <Radio class="text-text" name="returnType" value="html" bind:group={returnType}>HTML</Radio>
+      <Radio class="text-text" name="returnType" value="raw" bind:group={returnType}>Raw</Radio>
+    </div>
   </div>
-  <div class="flex-1 inputPanel">
+  <div class="column">
     <Textarea
       class="promptInput"
       bind:value={prompt}
@@ -112,17 +129,16 @@
     gap: 20px;
   }
 
-  .flex-1 {
-    flex: 1;
-  }
-
-  .instructionList {
+  .return-type-group{
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    gap: 10px
+  }
+  .flex-1 {
+    flex: 1
   }
 
-  .inputPanel {
+  .column {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 8px;

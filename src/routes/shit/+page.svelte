@@ -1,5 +1,7 @@
 <script lang="ts">
     import Button from "../../components/Button.svelte";
+    import { sanitiseOutput } from "../../services/outputSanitiser";
+    
     import PromptForm from "./PromptForm.svelte";
     import SettingsModal from "./SettingsModal.svelte";
 
@@ -7,12 +9,12 @@
     let settingsVisible = false;
     let settings = {
         fontSize: 22,
-        paragraphSpacing: 0
+        paragraphSpacing: 20
     };
     $: output = "";
 
     function onOutputShow(val: string) {
-        output = val
+        output = sanitiseOutput(val)
     }
 
     function scrollToTop() {
@@ -42,11 +44,11 @@
         </Button>
     </div>
     {#if builderVisible}
-        <h1>Build Prompt</h1>
+        <h1 class="text-text">Build Prompt</h1>
         <PromptForm {onOutputShow} />
     {/if}
 
-    <div class="outputPanel" style="
+    <div class="outputPanel text-text border-text" style="
         font-size: {settings.fontSize}px;
         --paragraph-spacing: {settings.paragraphSpacing}px;
     ">
@@ -78,7 +80,7 @@
         padding: 0 50px;
     }
     .outputPanel {
-        border: 1px solid black;
+        border: 1px solid;
         border-radius: 8px;
         padding: 20px;
         max-width: 1024px;
