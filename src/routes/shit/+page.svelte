@@ -1,6 +1,7 @@
 <script lang="ts">
   import Button from "../../components/Button.svelte";
   import { sanitiseOutput } from "../../services/outputSanitiser";
+  import ImageGenerator from "./ImageGenerator.svelte";
 
   import PromptForm from "./PromptForm.svelte";
   import SettingsModal from "./SettingsModal.svelte";
@@ -11,6 +12,7 @@
     fontSize: 22,
     paragraphSpacing: 20
   };
+  let imageGeneratorCoords = null
   $: output = "";
 
   function onOutputShow(val: string) {
@@ -24,11 +26,28 @@
     console.log("togglePromptBuilder");
     builderVisible = !builderVisible;
   }
+
+  function onOutputMouseUp () {
+    const selection = window.getSelection();
+
+    if (selection && selection.toString().trim().length > 0) {
+      const range = selection.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+      imageGeneratorCoords = {
+        left: rect.left + window.scrollX,
+        top: rect.bottom + window.scrollY
+      }
+    } else {
+      imageGeneratorCoords = null
+    }
+  }
+
+
 </script>
 
 <svelte:head>
-    <title>About</title>
-    <meta name="description" content="About this app" />
+    <title>Text Editor</title>
+    <meta name="description" content="Magic text editor" />
 </svelte:head>
 
 <div class="container flex-1">
@@ -45,10 +64,19 @@
     <PromptForm {onOutputShow} />
   {/if}
 
-  <div class="outputPanel text-text border-border border bg-white bg-opacity-10 flex-1" style="
-    font-size: {settings.fontSize}px;
-    --paragraph-spacing: {settings.paragraphSpacing}px;
-  ">
+  {#if imageGeneratorCoords}
+    <ImageGenerator coords={imageGeneratorCoords} />
+  {/if}
+  <div 
+    class="outputPanel text-text border-border border bg-white bg-opacity-10 flex-1"
+    role="textbox"
+    tabindex="-1"
+    on:mouseup={onOutputMouseUp}
+    style="
+      font-size: {settings.fontSize}px;
+      --paragraph-spacing: {settings.paragraphSpacing}px;
+    "
+  >
     {@html output}
   </div>
 </div>

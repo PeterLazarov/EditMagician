@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { Textarea, Radio } from 'flowbite-svelte';
 
-  import { sendContextPrompt } from "../../services/openAI";
+  import { sendChatContextPrompt } from "../../services/openAI";
   import Button from "../../components/Button.svelte";
   import Label from "../../components/Label.svelte";
   import { setCookie, getCookie } from "../../services/cookies";
@@ -10,11 +10,10 @@
   let prompt = "";
   let context = "";
   let queue = "";
-  let returnType: 'raw' | 'html' = "html";
-  let submitButton: Button; 
+  let returnType: 'raw' | 'text' = "text";
   const returnTypeInstructions = {
     raw: '',
-    html: 'Return the result as an html with a paragraph formatting'
+    text: 'Return the result as an html with a paragraph formatting'
   } as const
   export let onOutputShow: (value: string) => void;
   export let loading = false;
@@ -35,14 +34,10 @@
 
     loading = true;
     queue = ''
-    sendContextPrompt(fullContext, prompt).then((val) => {
+    sendChatContextPrompt(fullContext, prompt).then((val) => {
       loading = false;
       onOutputShow(val || '')
     });
-
-    if (submitButton) {
-      submitButton.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
   }
 
   function handleQueue(event: Event) {
@@ -50,7 +45,7 @@
     console.log("queue");
 
     loading = true;
-    sendContextPrompt(fullContext, prompt).then((val) => {
+    sendChatContextPrompt(fullContext, prompt).then((val) => {
       loading = false;
       queue = val || ''
     });
@@ -64,7 +59,6 @@
   }
 
   function handleKeydown(event: KeyboardEvent) {
-    console.log(event)
     if ((event.ctrlKey || event.metaKey || event.altKey) && event.key === "s") {
       handleSend(event);
     }
@@ -84,13 +78,12 @@
     />
     <div class="return-type-group"> 
       <Label>Return Format</Label>
-      <Radio class="text-text" name="returnType" value="html" bind:group={returnType}>HTML</Radio>
+      <Radio class="text-text" name="returnType" value="text" bind:group={returnType}>Text</Radio>
       <Radio class="text-text" name="returnType" value="raw" bind:group={returnType}>Raw</Radio>
     </div>
   </div>
   <div class="column">
     <Textarea
-      class="promptInput"
       bind:value={prompt}
       on:keydown={handleKeydown}
       placeholder="Enter text"
@@ -139,11 +132,5 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-  }
-
-  .promptInput {
-    height: 100%;
-    padding: 10px;
-    outline: none;
   }
 </style>
