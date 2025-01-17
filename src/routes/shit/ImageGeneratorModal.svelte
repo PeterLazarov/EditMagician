@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Modal } from "flowbite-svelte";
   import Button from "../../components/Button.svelte";
+  import Modal from "../../components/Modal.svelte";
 
   export let showModal = false;
   export let generateImage: () => void 

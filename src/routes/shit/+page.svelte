@@ -9,7 +9,7 @@
   let builderVisible = true;
   let settingsVisible = false;
   let settings = {
-    fontSize: 22,
+    fontSize: 24,
     paragraphSpacing: 20
   };
   let imageGeneratorCoords = null

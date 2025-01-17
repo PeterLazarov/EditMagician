@@ -1,21 +1,22 @@
 <script lang="ts">
   import { Modal } from "flowbite-svelte";
+  import type { ModalProps } from "flowbite-svelte/Modal.svelte";
   
   export let className: string = "";
   export let classHeader: string = "";
   export let classFooter: string = "";
+  export let open = false;
+
+  const typedRestProps: Partial<ModalProps> = $$restProps
 </script>
 
 <Modal 
-  {...$$restProps}
-  class={`bg-background-500 ${className}`} 
+  {...typedRestProps}
+  bind:open={open}
+  class={`bg-background-500 text-text ${className}`} 
   classHeader={`bg-background-500 text-text ${classHeader}`}
   classFooter={`bg-background-500 justify-end ${classFooter}`} 
 >
-  <svelte:fragment slot="header">
-    <slot name="header" />
-  </svelte:fragment>
-
   <slot />
 
   <svelte:fragment slot="footer">

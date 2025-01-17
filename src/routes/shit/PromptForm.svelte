@@ -133,4 +133,10 @@
     flex-direction: column;
     gap: 8px;
   }
+
+  @media (width < 30rem) {
+    .builder {
+      flex-direction: column;
+    }
+  }
 </style>
