@@ -38,6 +38,7 @@ export async function callImageAPI(prompt: string): Promise<string | undefined> 
     const response = await axios.post(
       VITE_OPENAI_API_IMAGE_URL,
       {
+        model: "dall-e-3",
         prompt: prompt.substring(0,999),
         n: 1,
         size: '1024x1024'

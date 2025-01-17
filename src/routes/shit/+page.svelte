@@ -1,7 +1,7 @@
 <script lang="ts">
   import Button from "../../components/Button.svelte";
   import { sanitiseOutput } from "../../services/outputSanitiser";
-  import ImageGenerator from "./ImageGenerator.svelte";
+  import ActionPanel from "./ActionPanel.svelte";
 
   import PromptForm from "./PromptForm.svelte";
   import SettingsModal from "./SettingsModal.svelte";
@@ -65,7 +65,7 @@
   {/if}
 
   {#if imageGeneratorCoords}
-    <ImageGenerator coords={imageGeneratorCoords} />
+    <ActionPanel coords={imageGeneratorCoords} />
   {/if}
   <div 
     class="outputPanel text-text border-border border bg-white bg-opacity-10 flex-1"
