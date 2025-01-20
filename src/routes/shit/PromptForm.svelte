@@ -11,6 +11,7 @@
   let context = "";
   let queue = "";
   let returnType: 'raw' | 'text' = "text";
+  let aborted = false;
   const returnTypeInstructions = {
     raw: '',
     text: 'Return the result as an html with a paragraph formatting'
@@ -33,10 +34,13 @@
     console.log("submit");
 
     loading = true;
+    aborted = false;
     queue = ''
     sendChatContextPrompt(fullContext, prompt).then((val) => {
       loading = false;
-      onOutputShow(val || '')
+      if (!aborted) {
+        onOutputShow(val || '')
+      }
     });
   }
 
@@ -45,9 +49,12 @@
     console.log("queue");
 
     loading = true;
+    aborted = false;
     sendChatContextPrompt(fullContext, prompt).then((val) => {
       loading = false;
-      queue = val || ''
+      if (!aborted) {
+        queue = val || ''
+      }
     });
   }
 
@@ -65,6 +72,11 @@
     else if ((event.ctrlKey || event.metaKey || event.altKey) && event.key === "q") {
       handleQueue(event);
     }
+  }
+
+  function abort() {
+    aborted = true
+    loading = false
   }
 </script>
 
@@ -89,27 +101,33 @@
       placeholder="Enter text"
     />
 
-    <Button on:click={handleSend} disabled={loading}>
-      {#if loading}
-        Waiting for response ...
-      {:else}
-        <u>S</u>end
-      {/if}
-    </Button>
-
-    {#if queue !== ''}
-      <Button on:click={showQueued} disabled={loading}>
-        Show queued
-      </Button>
-    {:else}
-      <Button on:click={handleQueue} disabled={loading}>
+    <div class="flex gap-2">
+      <Button className='flex-1' on:click={handleSend} disabled={loading}>
         {#if loading}
           Waiting for response ...
         {:else}
-          <u>Q</u>ueue
+          <u>S</u>end
         {/if}
       </Button>
-    {/if}
+
+      {#if queue !== ''}
+        <Button className='flex-1'  on:click={showQueued} disabled={loading}>
+          Show queued
+        </Button>
+      {:else}
+        <Button className='flex-1'  on:click={handleQueue} disabled={loading}>
+          {#if loading}
+            Waiting for response ...
+          {:else}
+            <u>Q</u>ueue
+          {/if}
+        </Button>
+      {/if}
+
+      <Button on:click={abort} disabled={!loading}>
+        X
+      </Button>
+    </div>
   </div>
 </div>
 
